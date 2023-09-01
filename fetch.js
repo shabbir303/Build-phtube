@@ -3,6 +3,8 @@ const handleButton = async()=> {
     const allButton =await res.json();
     console.log(allButton.data);
     const buttonContainer = document.getElementById('button-container');
+
+    
     allButton.data.forEach((eachButton) => {
         const everyButton = document.createElement('div');
         everyButton.innerHTML = `
@@ -11,6 +13,8 @@ const handleButton = async()=> {
         </div>
         `
         buttonContainer.appendChild(everyButton);
+        console.log(eachButton.category_id.length)
+       
     });
 
 }
@@ -19,17 +23,26 @@ const buttonDetails = async(id) =>{
     const res =await fetch(`https://openapi.programming-hero.com/api/videos/category/${id}`);
     const allDetails = await res.json();
     console.log(allDetails.data);
-    console.log()
+    console.log(allDetails.data.length)
+    const noContent = document.getElementById('no-content')
+    if(allDetails.data.length === 0){
+        noContent.classList.remove('hidden')
+    }else{
+        noContent.classList.add('hidden')
+    }
     const detailsContainer = document.getElementById('button-details');
     detailsContainer.innerHTML = '';
-    allDetails.data.forEach((eachData)=>{
-        
 
+    // console.log( allDetails.data[1].others.posted_date)
+    allDetails.data.forEach((eachData)=>{
         const eachContainer = document.createElement('div');
         eachContainer.innerHTML = `
         <div class="card w-96 bg-base-100 shadow-xl">
-            <figure><img src=${eachData.thumbnail} alt="Shoes" class="w-full max-h-[200px]" /></figure>
+            <figure class='relative'><img src=${eachData.thumbnail} alt="Shoes" class="w-full max-h-[200px]" />
+            <h1 class="absolute bg-black text-white px-[10px]">${eachData.others.posted_date}</h1>
+            </figure>
             <div class="p-[30px]">
+            
             <div class=" flex  gap-[20px] items-center">
                 <div class="avatar">
                 <div class="w-[40px] rounded-full">
@@ -56,7 +69,10 @@ const buttonDetails = async(id) =>{
         </div>
         `
         detailsContainer.appendChild(eachContainer);
+        // console.log(eachData.length)
+
+       
     })
 }    
-buttonDetails('1005')
+buttonDetails('1000')
 handleButton()
