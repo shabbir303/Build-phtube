@@ -16,17 +16,22 @@ const handleButton = async()=> {
         </div>
         `
         buttonContainer.appendChild(everyButton);
-        console.log(eachButton.category_id.length)
+        // console.log(eachButton.category_id.length)
        
     });
 
 }
 
-const buttonDetails = async(id) =>{
+const buttonDetails = async(id, sortByViews = false) =>{
     const res =await fetch(`https://openapi.programming-hero.com/api/videos/category/${id}`);
     const allDetails = await res.json();
-    console.log(allDetails.data);
-    console.log(allDetails.data.length)
+    // console.log(allDetails.data);
+    // console.log(allDetails.data.length)
+    if (sortByViews) {
+        allDetails.data.sort((a, b) => b.others.views - a.others.views);
+
+    }
+
     const noContent = document.getElementById('no-content')
     if(allDetails.data.length === 0){
         noContent.classList.remove('hidden')
@@ -36,22 +41,23 @@ const buttonDetails = async(id) =>{
     const detailsContainer = document.getElementById('button-details');
     detailsContainer.innerHTML = '';
 
-    console.log(typeof allDetails?.data[0]?.others.posted_date)
-
+    // console.log(typeof allDetails?.data[0]?.others.posted_date)
 
     
+    
     allDetails.data.forEach((eachData)=>{
-
+        
+        
         // console.log( eachData.others.posted_date);
         const postedDate = eachData.others.posted_date;
         const seconds = parseInt(postedDate);
-        console.log(seconds)
+        // console.log(seconds)
         const day = seconds / 86400;
         const remaining_seconds = seconds % 86400;
         const hours = remaining_seconds / 3600;
         const remainingSeconds = seconds % 3600;
         const minitues = remainingSeconds /60;
-        console.log(day, hours, minitues);
+        // console.log(day, hours, minitues);
         
         
         const eachContainer = document.createElement('div');
@@ -90,7 +96,7 @@ const buttonDetails = async(id) =>{
         `
         detailsContainer.appendChild(eachContainer);
         // console.log(eachData.length)
-
+        
        
     })
     
@@ -98,52 +104,42 @@ const buttonDetails = async(id) =>{
 
 
 
-
-let isAnswerVisible = ''; 
-//please press 2 times to the blog button
-// 1st press you will show the que and answer
-// 2nd press hide the que and ans
-const blogClicked = () => {
-    const createAns = document.getElementById('que-ans');
+// const sortView = async() =>{
+//     const res = await fetch('https://openapi.programming-hero.com/api/videos/category/1000');
+//     const allDetails = await res.json();
     
-    
-    if (isAnswerVisible) {
-        
-        createAns.innerHTML = ''; 
-        isAnswerVisible = '';
-    } else {
-        
-        const queAnswer = document.createElement('div');
-        queAnswer.innerHTML = `
-        <div class= "border-[1px] p-[20px] ">
-        <h1 class= 'text-[20px] font-bold'>
-        Que:1-Discuss the scope of var, let, and const?
-        </h1>
-        <h2>
-        Ans:
-        </h2>
-        <h1 class= 'text-[20px] font-bold mt-[10px]'>
-        Que:2-Tell us the use cases of null and undefined?
-        </h1>
-        <h2>
-        Ans:
-        </h2>
-        <h1 class= 'text-[20px] font-bold mt-[10px]'>
-        Que:3-What do you mean by REST API?
-        </h1>
-        <h2>
-        Ans:
-        </h2>
-        </div>
-        `;
-        createAns.appendChild(queAnswer);
-        isAnswerVisible = ' ';
-    }
-}
 
-const sortView = () =>{
+//         const sortviewArray = allDetails.data.map((eachData) =>{
+//             const sortNum = parseInt(eachData.others.views);
+//             return sortNum;
+//         });
+//         sortviewArray.sort((x,y)=> y-x)
 
-}
+//         const detailsContainer = document.getElementById('button-details');
+//         detailsContainer.innerHTML = '';
+//         sortviewArray.forEach((desecending)=>{
+//             console.log(desecending);
+//             const descendingOrder = document.createElement('div');
+//             descendingOrder.innerHTML =`
+            
+//             <h1>${desecending}kviews</h1>
+//             `
+//             detailsContainer.appendChild(descendingOrder);
+//         })
+
+
+        
+        
+       
+// }
+
+// sortView()
+
+const sortButton = document.getElementById('sort-button');
+        sortButton.addEventListener('click', () => {
+            // Call buttonDetails with the sortByViews argument set to true
+            
+        });
 
 buttonDetails('1000')
 handleButton()
