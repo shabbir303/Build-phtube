@@ -28,8 +28,13 @@ const buttonDetails = async(id, sortByViews = false) =>{
     // console.log(allDetails.data);
     // console.log(allDetails.data.length)
     if (sortByViews) {
-        allDetails.data.sort((a, b) => b.others.views - a.others.views);
-
+        allDetails.data.sort((a, b) => {
+            const A = parseInt(a.others.views);
+            const B = parseInt(b.others.views);
+            const sortData = B - A;
+            return sortData;
+        });
+        // console.log(sortData)
     }
 
     const noContent = document.getElementById('no-content')
